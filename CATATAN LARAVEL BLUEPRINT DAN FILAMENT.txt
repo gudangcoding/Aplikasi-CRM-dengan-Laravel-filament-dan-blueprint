@@ -1,0 +1,74 @@
+1. install laravel pastikan sudah terinstall php dan composer
+2. laravel cli
+    composer global require laravel/installer
+3. buat proyek baru
+    laravel new payroll
+4. install laravel blueprint
+    composer require -W --dev laravel-shift/blueprint
+5. buka di vscode, buka terminal lalu
+    php artisan migrate
+6. buat file draft.yaml dengan
+    php artisan blueprint:new
+7. atur file draft.yamlnya
+
+    models:
+        Departement:
+            nama: string
+            description: string
+            relationships:
+                hasmany: Employee
+
+        Position:
+            name: string
+            description: text
+            relationships:
+                hasmany: Employee
+
+        Employee:
+            Departement_id: foreign
+            Position_id: foreign
+            name: string
+            email: string
+            joined: date
+            status: enum: aktif,tidak aktif default:tidak aktif
+            relationships:
+                hasmany: Leaverequest,sallary
+
+        LeaveRequest:
+            Employee_id: foreign
+            start_date: date
+            end_date: date
+            type: enum: aktif,tidak aktif default:tidak aktif
+            status: enum: pending,accepted,rejected default:pending
+            reason: text nullable
+
+        sallary:
+            Employee_id: foreign
+            amount: double
+            effective_date: date
+9. jangan lupa untuk migrate baru
+    php artisan migrate:fresh --seed
+8. php artisan blueprint:build
+9. install laravel filament
+    composer require filament/filament:"^3.2" -W
+10. buat halaman panel admin
+    php artisan filament:install --panels
+    berinama panel
+11. buat user baru
+    php artisan make:filament-user
+
+    nama: nama_kamu
+    email:a@a.com
+    password:123
+12. buat filament berdasarkan nama tabel, contoh
+    php artisan make:filament-resource Departement --generate
+13.  setting agar laravel faker bahasa indonesia
+    buka folder env APP_FAKER_LOCALE=id_ID jadi indonesia
+selanjutnya akses panelnya
+    http://localhost/panel/login.
+
+selanjutnya bisa ke
+https://filamentphp.com/docs/3.x/panels/installation
+https://blueprint.laravelshift.com/docs/installation/
+
+
