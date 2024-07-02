@@ -1,0 +1,172 @@
+models:
+  # untuk data master
+  Employee:
+    type: enum:admin,employee,customer,supplier default:employee
+    Departement_id: foreign:Departement
+    Position_id: foreign:Position
+    name: string
+    email: string
+    joined: date
+    status: enum:aktif,resign default:aktif
+    relationships:
+      hasMany: Cuti,sallary,Contact
+
+  Customer:
+    name: string
+    relationships:
+      hasMany: Order,Shipment
+
+  Supplier:
+    name: string
+    relationships:
+      hasMany: Products
+
+  Contact:
+    user_id: foreign:Employee,Customer,Supplier
+    label: string
+    type: enum:admin,employee,customer,supplier default:employee
+    aplikasi: enum:telepon,whatsapp default:telepon
+    nomor: string
+
+  Address:
+    user_id: foreign:Employee,Customer,Supplier
+    label: string
+    type: enum:admin,employee,customer,supplier default:employee
+    alamat: text
+
+  # untuk kasir
+  Categories:
+    name: string:50
+    slug: string:50
+    relationships:
+      hasMany: Products
+
+  Products:
+    category_id: foreign:Categories
+    name: string:50
+    description: text
+    satuan: string:50
+    harga_beli: decimal:10,2
+    harga_jual: decimal:10,2
+    ukuran_kemasan: string
+    volume: decimal:10,2
+    berat: decimal:10,2
+    stok: integer
+    aktif: enum:Y,N default:Y
+    relationships:
+      hasMany: OrderDetail
+
+  Order:
+    customer_id: foreign:Customer
+    order_date: date
+    status: enum:pending,processing,shipped,delivered,canceled
+    relationships:
+      hasMany: OrderDetail
+      belongsTo: Customer
+
+  OrderDetail:
+    order_id: foreign:Order
+    product_id: foreign:Products
+    quantity: integer
+    price: decimal:10,2
+    relationships:
+      belongsTo: Order
+
+  # untuk shipment
+  Shipment:
+    user_id: foreign:User
+    customer_id: foreign:Customer
+    status_id: foreign:StatusShipment
+    current_location: string
+    estimated_delivery: date
+    timestamps: true
+    relationships:
+      hasMany: ShipmentDetail
+
+  ShipmentDetail:
+    tracking_number: string
+    sender_address: string
+    recipient_address: string
+    weight: decimal:5,2
+    volume: decimal:5,2
+    status: enum:pending,shipped,delivered,canceled default:pending
+    timestamps: true
+    relationships:
+      belongsTo: Customer
+      hasMany: Shipment
+
+  StatusShipment:
+    shipment_id: foreign:Shipment
+    status: enum:pending,shipped,delivered,canceled default:pending
+    via: string
+    description: text
+    relationships:
+      belongsTo: Shipment
+
+  #untuk inventori
+  ProductInventory:
+    product_id: foreign:Products
+    quantity: integer
+    location: string
+    relationships:
+      belongsTo: Products
+
+  # untuk finance
+  Transaction:
+    account_id: foreign:Account
+    date: date
+    type: enum:aset,kewajiban,modal,beban,pengeluaran,pendapatan default:aset
+    amount: decimal:10,2
+    description: longtext
+    relationships:
+      belongsTo: Account
+
+  Account:
+    name: string
+    description: text
+    type: enum:aset,kewajiban,modal,beban,pengeluaran,pendapatan default:aset
+    relationships:
+      hasMany: Transaction
+
+  # untuk keuangan lainnya
+  Jurnal:
+    date: date
+    description: text
+    relationships:
+      hasMany: JurnalDetail
+
+  JurnalDetail:
+    jurnal_id: foreign:Jurnal
+    account_id: foreign:Account
+    amount: decimal:10,2
+    type: enum:debit,credit
+
+  # untuk payroll
+  Departement:
+    nama: string
+    description: string
+    relationships:
+      hasmany: Employee
+
+  Position:
+    name: string
+    description: text
+    relationships:
+      hasmany: Employee
+
+  Cuti:
+    employee_id: foreign:Employee
+    start_date: date
+    end_date: date
+    type: enum:aktif,cuti default:aktif
+    status: enum:pending,accepted,rejected default:pending
+    reason: text nullable
+    relationships:
+      hasMany: Employee
+
+  Sallary:
+    employee_id: foreign:Employee
+    amount: double
+    effective_date: date
+    relationships:
+      hasMany: Employee
