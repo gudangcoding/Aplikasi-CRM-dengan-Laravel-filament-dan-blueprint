@@ -1,2 +1,87 @@
+created:
+    - database/factories/EmployeeFactory.php
+    - database/factories/CustomerFactory.php
+    - database/factories/SupplierFactory.php
+    - database/factories/ContactFactory.php
+    - database/factories/AddressFactory.php
+    - database/factories/CategoriesFactory.php
+    - database/factories/ProductsFactory.php
+    - database/factories/OrderFactory.php
+    - database/factories/OrderDetailFactory.php
+    - database/factories/ShipmentFactory.php
+    - database/factories/ShipmentDetailFactory.php
+    - database/factories/StatusShipmentFactory.php
+    - database/factories/ProductInventoryFactory.php
+    - database/factories/TransactionFactory.php
+    - database/factories/AccountFactory.php
+    - database/factories/JurnalFactory.php
+    - database/factories/JurnalDetailFactory.php
+    - database/factories/DepartementFactory.php
+    - database/factories/PositionFactory.php
+    - database/factories/CutiFactory.php
+    - database/factories/SallaryFactory.php
+    - database/migrations/2024_07_02_125640_create_employees_table.php
+    - database/migrations/2024_07_02_125641_create_customers_table.php
+    - database/migrations/2024_07_02_125642_create_suppliers_table.php
+    - database/migrations/2024_07_02_125643_create_contacts_table.php
+    - database/migrations/2024_07_02_125644_create_addresses_table.php
+    - database/migrations/2024_07_02_125645_create_categories_table.php
+    - database/migrations/2024_07_02_125646_create_products_table.php
+    - database/migrations/2024_07_02_125647_create_orders_table.php
+    - database/migrations/2024_07_02_125648_create_order_details_table.php
+    - database/migrations/2024_07_02_125649_create_shipments_table.php
+    - database/migrations/2024_07_02_125650_create_shipment_details_table.php
+    - database/migrations/2024_07_02_125651_create_status_shipments_table.php
+    - database/migrations/2024_07_02_125652_create_product_inventories_table.php
+    - database/migrations/2024_07_02_125653_create_transactions_table.php
+    - database/migrations/2024_07_02_125654_create_accounts_table.php
+    - database/migrations/2024_07_02_125655_create_jurnals_table.php
+    - database/migrations/2024_07_02_125656_create_jurnal_details_table.php
+    - database/migrations/2024_07_02_125657_create_departements_table.php
+    - database/migrations/2024_07_02_125658_create_positions_table.php
+    - database/migrations/2024_07_02_125659_create_cutis_table.php
+    - database/migrations/2024_07_02_125700_create_sallaries_table.php
+    - app/Models/Employee.php
+    - app/Models/Customer.php
+    - app/Models/Supplier.php
+    - app/Models/Contact.php
+    - app/Models/Address.php
+    - app/Models/Categories.php
+    - app/Models/Products.php
+    - app/Models/Order.php
+    - app/Models/OrderDetail.php
+    - app/Models/Shipment.php
+    - app/Models/ShipmentDetail.php
+    - app/Models/StatusShipment.php
+    - app/Models/ProductInventory.php
+    - app/Models/Transaction.php
+    - app/Models/Account.php
+    - app/Models/Jurnal.php
+    - app/Models/JurnalDetail.php
+    - app/Models/Departement.php
+    - app/Models/Position.php
+    - app/Models/Cuti.php
+    - app/Models/Sallary.php
 models:
     User: { name: string, email: string, email_verified_at: 'timestamp nullable', password: string, remember_token: 'string:100 nullable' }
+    Employee: { type: 'enum:admin,employee,customer,supplier default:employee', Departement_id: 'foreign:Departement', Position_id: 'foreign:Position', name: string, email: string, joined: date, status: 'enum:aktif,resign default:aktif', relationships: { hasMany: 'Cuti,sallary,Contact' } }
+    Customer: { name: string, relationships: { hasMany: 'Order,Shipment' } }
+    Supplier: { name: string, relationships: { hasMany: Products } }
+    Contact: { user_id: 'foreign:Employee,Customer,Supplier', label: string, type: 'enum:admin,employee,customer,supplier default:employee', aplikasi: 'enum:telepon,whatsapp default:telepon', nomor: string }
+    Address: { user_id: 'foreign:Employee,Customer,Supplier', label: string, type: 'enum:admin,employee,customer,supplier default:employee', alamat: text }
+    Categories: { name: 'string:50', slug: 'string:50', relationships: { hasMany: Products } }
+    Products: { category_id: 'foreign:Categories', name: 'string:50', description: text, satuan: 'string:50', harga_beli: 'decimal:10,2', harga_jual: 'decimal:10,2', ukuran_kemasan: string, volume: 'decimal:10,2', berat: 'decimal:10,2', stok: integer, aktif: 'enum:Y,N default:Y', relationships: { hasMany: OrderDetail } }
+    Order: { customer_id: 'foreign:Customer', order_date: date, status: 'enum:pending,processing,shipped,delivered,canceled', relationships: { hasMany: OrderDetail, belongsTo: Customer } }
+    OrderDetail: { order_id: 'foreign:Order', product_id: 'foreign:Products', quantity: integer, price: 'decimal:10,2', relationships: { belongsTo: Order } }
+    Shipment: { user_id: 'foreign:User', customer_id: 'foreign:Customer', status_id: 'foreign:StatusShipment', current_location: string, estimated_delivery: date, timestamps: timestamps, relationships: { hasMany: ShipmentDetail } }
+    ShipmentDetail: { tracking_number: string, sender_address: string, recipient_address: string, weight: 'decimal:5,2', volume: 'decimal:5,2', status: 'enum:pending,shipped,delivered,canceled default:pending', timestamps: timestamps, relationships: { belongsTo: Customer, hasMany: Shipment } }
+    StatusShipment: { shipment_id: 'foreign:Shipment', status: 'enum:pending,shipped,delivered,canceled default:pending', via: string, description: text, relationships: { belongsTo: Shipment } }
+    ProductInventory: { product_id: 'foreign:Products', quantity: integer, location: string, relationships: { belongsTo: Products } }
+    Transaction: { account_id: 'foreign:Account', date: date, type: 'enum:aset,kewajiban,modal,beban,pengeluaran,pendapatan default:aset', amount: 'decimal:10,2', description: longtext, relationships: { belongsTo: Account } }
+    Account: { name: string, description: text, type: 'enum:aset,kewajiban,modal,beban,pengeluaran,pendapatan default:aset', relationships: { hasMany: Transaction } }
+    Jurnal: { date: date, description: text, relationships: { hasMany: JurnalDetail } }
+    JurnalDetail: { jurnal_id: 'foreign:Jurnal', account_id: 'foreign:Account', amount: 'decimal:10,2', type: 'enum:debit,credit' }
+    Departement: { nama: string, description: string, relationships: { hasmany: Employee } }
+    Position: { name: string, description: text, relationships: { hasmany: Employee } }
+    Cuti: { employee_id: 'foreign:Employee', start_date: date, end_date: date, type: 'enum:aktif,cuti default:aktif', status: 'enum:pending,accepted,rejected default:pending', reason: 'text nullable', relationships: { hasMany: Employee } }
+    Sallary: { employee_id: 'foreign:Employee', amount: double, effective_date: date, relationships: { hasMany: Employee } }
