@@ -33,8 +33,16 @@ class Contact extends Model
         'user_id' => 'integer',
     ];
 
-    public function user(): BelongsTo
+    public function supplier(): BelongsTo
     {
-        return $this->belongsTo(Employee,Customer,Supplier::class);
+        return $this->belongsTo(Supplier::class);
+    }
+    public function employee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class);
+    }
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
     }
 }
