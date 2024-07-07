@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\JurnalsResource\Pages;
 use App\Filament\Resources\JurnalsResource\RelationManagers;
+use App\Models\Jurnal;
 use App\Models\Jurnals;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,8 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class JurnalsResource extends Resource
 {
-    protected static ?string $model = Jurnals::class;
-
+    protected static ?string $model = Jurnal::class;
+    protected static ?string $navigationGroup = "Akutansi";
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

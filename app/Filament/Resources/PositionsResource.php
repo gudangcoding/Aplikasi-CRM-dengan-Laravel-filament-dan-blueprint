@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PositionsResource\Pages;
 use App\Filament\Resources\PositionsResource\RelationManagers;
-use App\Models\Positions;
+use App\Models\Position;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PositionsResource extends Resource
 {
-    protected static ?string $model = Positions::class;
-
+    protected static ?string $model = Position::class;
+    protected static ?string $navigationGroup = "Payroll";
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class DepartementResource extends Resource
 {
     protected static ?string $model = Departement::class;
-
+    protected static ?string $navigationGroup = "Payroll";
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

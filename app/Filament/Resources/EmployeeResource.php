@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ContactResource\Pages;
-use App\Filament\Resources\ContactResource\RelationManagers;
-use App\Models\Contact;
+use App\Filament\Resources\EmployeeResource\Pages;
+use App\Filament\Resources\EmployeeResource\RelationManagers;
+use App\Models\Employee;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,29 +13,35 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ContactResource extends Resource
+class EmployeeResource extends Resource
 {
-    protected static ?string $model = Contact::class;
-    protected static ?string $navigationGroup = "Master Data";
+    protected static ?string $model = Employee::class;
+    protected static ?string $navigationGroup = "Payroll";
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('label')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\TextInput::make('type')
                     ->required(),
-                Forms\Components\TextInput::make('aplikasi')
+                Forms\Components\Select::make('Departement_id')
+                    ->relationship('Departement', 'id')
                     ->required(),
-                Forms\Components\TextInput::make('nomor')
+                Forms\Components\Select::make('Position_id')
+                    ->relationship('Position', 'name')
+                    ->required(),
+                Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\DatePicker::make('joined')
+                    ->required(),
+                Forms\Components\TextInput::make('status')
+                    ->required(),
             ]);
     }
 
@@ -43,15 +49,21 @@ class ContactResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('type'),
+                Tables\Columns\TextColumn::make('Departement.id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('label')
+                Tables\Columns\TextColumn::make('Position.name')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('type'),
-                Tables\Columns\TextColumn::make('aplikasi'),
-                Tables\Columns\TextColumn::make('nomor')
+                Tables\Columns\TextColumn::make('email')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('joined')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -84,9 +96,9 @@ class ContactResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListContacts::route('/'),
-            'create' => Pages\CreateContact::route('/create'),
-            'edit' => Pages\EditContact::route('/{record}/edit'),
+            'index' => Pages\ListEmployees::route('/'),
+            'create' => Pages\CreateEmployee::route('/create'),
+            'edit' => Pages\EditEmployee::route('/{record}/edit'),
         ];
     }
 }

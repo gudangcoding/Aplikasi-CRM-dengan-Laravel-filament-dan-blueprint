@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AccountsResource\Pages;
 use App\Filament\Resources\AccountsResource\RelationManagers;
-use App\Models\Accounts;
+use App\Models\Account;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AccountsResource extends Resource
 {
-    protected static ?string $model = Accounts::class;
-
+    protected static ?string $model = Account::class;
+    protected static ?string $navigationGroup = "Akutansi";
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

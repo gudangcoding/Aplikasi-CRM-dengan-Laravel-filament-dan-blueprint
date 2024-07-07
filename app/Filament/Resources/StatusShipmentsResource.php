@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StatusShipmentsResource\Pages;
 use App\Filament\Resources\StatusShipmentsResource\RelationManagers;
-use App\Models\StatusShipments;
+use App\Models\StatusShipment;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class StatusShipmentsResource extends Resource
 {
-    protected static ?string $model = StatusShipments::class;
-
+    protected static ?string $model = StatusShipment::class;
+    protected static ?string $navigationGroup = "Master Data";
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

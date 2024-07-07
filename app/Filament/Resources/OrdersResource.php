@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrdersResource\Pages;
 use App\Filament\Resources\OrdersResource\RelationManagers;
-use App\Models\Orders;
+use App\Models\Order;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class OrdersResource extends Resource
 {
-    protected static ?string $model = Orders::class;
-
+    protected static ?string $model = Order::class;
+    protected static ?string $navigationGroup = "Order";
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CutiesResource\Pages;
 use App\Filament\Resources\CutiesResource\RelationManagers;
+use App\Models\Cuti;
 use App\Models\Cuties;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,8 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CutiesResource extends Resource
 {
-    protected static ?string $model = Cuties::class;
-
+    protected static ?string $model = Cuti::class;
+    protected static ?string $navigationGroup = "Payroll";
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

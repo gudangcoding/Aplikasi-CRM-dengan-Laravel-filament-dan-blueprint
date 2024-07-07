@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SallariesResource\Pages;
 use App\Filament\Resources\SallariesResource\RelationManagers;
 use App\Models\Sallaries;
+use App\Models\Sallary;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,8 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SallariesResource extends Resource
 {
-    protected static ?string $model = Sallaries::class;
-
+    protected static ?string $model = Sallary::class;
+    protected static ?string $navigationGroup = "Payroll";
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
